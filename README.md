@@ -71,9 +71,3 @@ Once installed, your dashboards will be available in your Turbot Pipes workspace
 ## Customization
 
 This mod serves as an example of how you can customize and combine existing mods. Feel free to modify the queries, add new visualizations, or incorporate data from other sources to suit your specific needs.
-
-The files are structured:
-* mod.pp = your base mod file that has the overarching Title of the mod that will show in your dashboard list.  In this example we show how you can build a dependency on the AWS Compliance and AWS Insights mods to bring together all their controls and queries built into those mods.
-* aws_s3_public_access_benchmark.pp = custom benchmark example. The first section reuses exisiting AWS Compliance mod controls that are specific to S3 and public access. In the reference of the controls, they have a prefix of 'aws_compliance" to call the exisiting controls in the Compliance mod.
-* aws_s3_public_access_report.pp = is a copy of the report from the AWS Insights mod.  Here we took the entire dashboard and made slight edits to form into our scope. The queries referenced in each card are prefixed with "aws_insights" to reference the exisiting queries in the Insights mod.
-* aws_s3_public_access_report_guardrails.pp = fully customizes the prior report, pointing the queries at Turbot Guardrails instead for the information, and adding donut charts as additional examples vs the cards.
