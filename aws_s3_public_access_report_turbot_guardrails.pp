@@ -1,6 +1,6 @@
-dashboard "turbot_guardrails_aws_s3_bucket_public_access_report" {
+dashboard "turbot_guardrails_aws_s3_compliance_checks_access_report" {
 
-  title = "AWS S3 Bucket Public Access Report - Turbot Guardrails"
+  title = "AWS S3 Bucket Public Access Report by Turbot Guardrails"
 
   container {
 
@@ -47,7 +47,7 @@ dashboard "turbot_guardrails_aws_s3_bucket_public_access_report" {
       query = query.s3_bucket_public_policy_summary_chart
       type = "donut"
       width = 2
-      
+
       series "value" {
         point "Public" {
           color = "alert"
@@ -55,7 +55,7 @@ dashboard "turbot_guardrails_aws_s3_bucket_public_access_report" {
         point "Not public" {
           color = "ok"
         }
-   
+
       }
     }
 
@@ -64,7 +64,7 @@ dashboard "turbot_guardrails_aws_s3_bucket_public_access_report" {
       query = query.s3_bucket_block_public_acls_chart
       type  = "donut"
       width = 2
-      
+
       series "value" {
         point "Disabled" {
           color = "alert"
@@ -80,7 +80,7 @@ dashboard "turbot_guardrails_aws_s3_bucket_public_access_report" {
       query = query.s3_bucket_block_public_policy_chart
       type  = "donut"
       width = 2
-      
+
       series "value" {
         point "Disabled" {
           color = "alert"
@@ -96,7 +96,7 @@ dashboard "turbot_guardrails_aws_s3_bucket_public_access_report" {
       query = query.s3_bucket_ignore_public_acls_chart
       type  = "donut"
       width = 2
-      
+
       series "value" {
         point "Disabled" {
           color = "alert"
@@ -112,7 +112,7 @@ dashboard "turbot_guardrails_aws_s3_bucket_public_access_report" {
       query = query.s3_bucket_restrict_public_buckets_chart
       type  = "donut"
       width = 2
-      
+
       series "value" {
         point "Disabled" {
           color = "alert"
@@ -168,16 +168,16 @@ query "s3_bucket_public_policy_summary" {
     WITH bucket_data AS (
       ${query.s3_bucket_public_access_table.sql}
     )
-    SELECT 
-      COUNT(*) as value, 
-      'Has Public Bucket Policy' as label, 
-      CASE 
-        WHEN COUNT(*) = 0 THEN 'ok' 
-        ELSE 'alert' 
+    SELECT
+      COUNT(*) as value,
+      'Has Public Bucket Policy' as label,
+      CASE
+        WHEN COUNT(*) = 0 THEN 'ok'
+        ELSE 'alert'
       END as "type"
-    FROM 
+    FROM
       bucket_data
-    WHERE 
+    WHERE
       "Bucket Policy Public" = 'Public'
   EOQ
 }
@@ -190,9 +190,9 @@ query "s3_bucket_block_public_acls_disabled_count" {
     SELECT
       COUNT(*) as value,
       'New Public ACLs Allowed' as label,
-      CASE 
-        WHEN COUNT(*) = 0 THEN 'ok' 
-        ELSE 'alert' 
+      CASE
+        WHEN COUNT(*) = 0 THEN 'ok'
+        ELSE 'alert'
       END as "type"
     FROM
       bucket_data
@@ -209,9 +209,9 @@ query "s3_bucket_block_public_policy_disabled_count" {
     SELECT
       COUNT(*) as value,
       'New Public Bucket Policies Allowed' as label,
-      CASE 
-        WHEN COUNT(*) = 0 THEN 'ok' 
-        ELSE 'alert' 
+      CASE
+        WHEN COUNT(*) = 0 THEN 'ok'
+        ELSE 'alert'
       END as "type"
     FROM
       bucket_data
@@ -228,9 +228,9 @@ query "s3_bucket_ignore_public_acls_disabled_count" {
     SELECT
       COUNT(*) as value,
       'Public ACLs Not Ignored' as label,
-      CASE 
-        WHEN COUNT(*) = 0 THEN 'ok' 
-        ELSE 'alert' 
+      CASE
+        WHEN COUNT(*) = 0 THEN 'ok'
+        ELSE 'alert'
       END as "type"
     FROM
       bucket_data
@@ -247,9 +247,9 @@ query "s3_bucket_restrict_public_buckets_disabled_count" {
     SELECT
       COUNT(*) as value,
       'Public Bucket Policies Unrestricted' as label,
-      CASE 
-        WHEN COUNT(*) = 0 THEN 'ok' 
-        ELSE 'alert' 
+      CASE
+        WHEN COUNT(*) = 0 THEN 'ok'
+        ELSE 'alert'
       END as "type"
     FROM
       bucket_data
@@ -265,16 +265,16 @@ query "s3_bucket_public_policy_summary_chart" {
     WITH bucket_data AS (
       ${query.s3_bucket_public_access_table.sql}
     )
-    SELECT 
+    SELECT
       "Bucket Policy Public" as label,
       COUNT(*) as value,
-      CASE 
-        WHEN "Bucket Policy Public" = 'Public' THEN 'alert' 
-        ELSE 'ok' 
+      CASE
+        WHEN "Bucket Policy Public" = 'Public' THEN 'alert'
+        ELSE 'ok'
       END as type
-    FROM 
+    FROM
       bucket_data
-    GROUP BY 
+    GROUP BY
       "Bucket Policy Public"
     ORDER BY
       "Bucket Policy Public" DESC
@@ -286,16 +286,16 @@ query "s3_bucket_block_public_acls_chart" {
     WITH bucket_data AS (
       ${query.s3_bucket_public_access_table.sql}
     )
-    SELECT 
+    SELECT
       "Block Public ACLs" as label,
       COUNT(*) as value,
-      CASE 
-        WHEN "Block Public ACLs" = 'Disabled' THEN 'alert' 
-        ELSE 'ok' 
+      CASE
+        WHEN "Block Public ACLs" = 'Disabled' THEN 'alert'
+        ELSE 'ok'
       END as type
-    FROM 
+    FROM
       bucket_data
-    GROUP BY 
+    GROUP BY
       "Block Public ACLs"
     ORDER BY
       "Block Public ACLs" DESC
@@ -307,16 +307,16 @@ query "s3_bucket_block_public_policy_chart" {
     WITH bucket_data AS (
       ${query.s3_bucket_public_access_table.sql}
     )
-    SELECT 
+    SELECT
       "Block Public Policy" as label,
       COUNT(*) as value,
-      CASE 
-        WHEN "Block Public Policy" = 'Disabled' THEN 'alert' 
-        ELSE 'ok' 
+      CASE
+        WHEN "Block Public Policy" = 'Disabled' THEN 'alert'
+        ELSE 'ok'
       END as type
-    FROM 
+    FROM
       bucket_data
-    GROUP BY 
+    GROUP BY
       "Block Public Policy"
     ORDER BY
       "Block Public Policy" DESC
@@ -328,16 +328,16 @@ query "s3_bucket_ignore_public_acls_chart" {
     WITH bucket_data AS (
       ${query.s3_bucket_public_access_table.sql}
     )
-    SELECT 
+    SELECT
       "Ignore Public ACLs" as label,
       COUNT(*) as value,
-      CASE 
-        WHEN "Ignore Public ACLs" = 'Disabled' THEN 'alert' 
-        ELSE 'ok' 
+      CASE
+        WHEN "Ignore Public ACLs" = 'Disabled' THEN 'alert'
+        ELSE 'ok'
       END as type
-    FROM 
+    FROM
       bucket_data
-    GROUP BY 
+    GROUP BY
       "Ignore Public ACLs"
     ORDER BY
       "Ignore Public ACLs" DESC
@@ -349,16 +349,16 @@ query "s3_bucket_restrict_public_buckets_chart" {
     WITH bucket_data AS (
       ${query.s3_bucket_public_access_table.sql}
     )
-    SELECT 
+    SELECT
       "Restrict Public Buckets" as label,
       COUNT(*) as value,
-      CASE 
-        WHEN "Restrict Public Buckets" = 'Disabled' THEN 'alert' 
-        ELSE 'ok' 
+      CASE
+        WHEN "Restrict Public Buckets" = 'Disabled' THEN 'alert'
+        ELSE 'ok'
       END as type
-    FROM 
+    FROM
       bucket_data
-    GROUP BY 
+    GROUP BY
       "Restrict Public Buckets"
     ORDER BY
       "Restrict Public Buckets" DESC

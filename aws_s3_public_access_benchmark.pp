@@ -1,12 +1,12 @@
-benchmark "aws_s3_bucket_public_benchmark" {
-  title       = "AWS S3 Public Access Governance Benchmark"
-  description = "Controls relevant to AWS S3 Buckets public accessibility."
+benchmark "aws_s3_compliance_checks_benchmark" {
+  title       = "AWS S3 Governance Benchmark"
+  description = "Controls relevant to AWS S3 Buckets various accessibility."
   children = [
-    benchmark.aws_s3_bucket_public_accessibility_guardrails
+    benchmark.aws_s3_compliance_checks_accessibility_guardrails
   ]
 }
 
-benchmark "aws_s3_bucket_public_accessibility_guardrails" {
+benchmark "aws_s3_compliance_checks_accessibility_guardrails" {
   title = "Turbot Guardrails S3 Bucket Public Accessibility Controls"
   children = [
     control.guardrails_s3_public_access_block_account,
